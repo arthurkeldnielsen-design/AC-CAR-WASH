@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="AC Car Wash — simple, fast, affordable car washes run by two local teens." />
+  <meta name="description" content="AC Car Wash — simple, fast, and affordable car washes run by two local teens." />
   <meta name="robots" content="index,follow" />
   <title>AC Car Wash — Services</title>
   <link rel="stylesheet" href="styles.css">
@@ -27,24 +27,44 @@
     </header>
 
     <section class="hero">
-      <h2>Simple, fast, and affordable car washes</h2>
-      <p>We focus on quality washes and great customer service. Book or walk in — we're flexible.</p>
+      <div class="hero-left">
+        <h2 class="animate-fade-up">Simple, fast, and affordable car washes</h2>
+        <p class="animate-fade-up delay-1">We focus on quality washes and great customer service. Book or walk in — we're flexible.</p>
+        <div class="hero-cta animate-fade-up delay-2"><a class="cta" href="contact.html">Book now</a></div>
+      </div>
+
+      <div class="hero-right animate-fade-right">
+        <!-- Before/After slider -->
+        <div class="ba-wrap" id="baWrap">
+          <div class="ba-container" id="baContainer">
+            <img class="ba-img before" src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=5f1c6c2f4e6c6ea4b6c1b4d3f8d9a1a9" alt="Before - dirty car">
+            <div class="ba-after-wrap" id="baAfterWrap">
+              <img class="ba-img after" src="https://images.unsplash.com/photo-1523986371872-9d3ba2e2f642?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=2f7a1b3c5c6a4d7e8b9c6a0d1e2f3a4b" alt="After - clean car">
+            </div>
+            <div class="ba-handle" id="baHandle" aria-hidden="true"><span class="bar"></span></div>
+          </div>
+          <div class="ba-labels">
+            <span>Before</span>
+            <span>After</span>
+          </div>
+        </div>
+      </div>
     </section>
 
     <section class="services-list" id="servicesList">
-      <article>
+      <article class="card animate-rise">
         <h3>Basic Wash</h3>
         <p>Exterior hand wash, quick dry. Great for a weekly refresh.</p>
         <div class="price">$8</div>
       </article>
 
-      <article>
+      <article class="card animate-rise delay-1">
         <h3>Deluxe Wash</h3>
         <p>Exterior + interior vacuum, window clean, tire shine.</p>
         <div class="price">$15</div>
       </article>
 
-      <article>
+      <article class="card animate-rise delay-2">
         <h3>Full Detail</h3>
         <p>Deep clean interior, shampoo carpets, wax exterior, and finish.</p>
         <div class="price">$40</div>

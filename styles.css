@@ -1,4 +1,4 @@
-/* styles.css — simple, sleek responsive layout */
+/* styles.css — simple, sleek responsive layout with animations and before/after slider */
 :root{--bg:#0f1724;--card:#0b1220;--accent:#00b4d8;--muted:#94a3b8;--glass: rgba(255,255,255,0.04)}
 *{box-sizing:border-box}
 body{margin:0;font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;background:linear-gradient(180deg,#071029 0%, #071020 60%);color:#e6eef8;min-height:100vh;display:flex}
@@ -12,10 +12,15 @@ body{margin:0;font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe
 .topbar{display:flex;align-items:center;gap:16px}
 .topbar h1{margin:0;font-size:1.25rem}
 #menuBtn{display:none;background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted);padding:8px;border-radius:8px}
-.hero{margin:18px 0;padding:18px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent)}
+.hero{margin:18px 0;padding:18px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);display:flex;gap:18px;align-items:center}
+.hero-left{flex:1}
+.hero-right{width:420px}
+.hero h2{margin:0 0 8px 0}
+.hero p{margin:0 0 12px 0;color:var(--muted)}
+.cta{display:inline-block;padding:10px 14px;background:var(--accent);color:#012; border-radius:10px;font-weight:700;text-decoration:none}
 .services-list{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
-.services-list article{background:rgba(255,255,255,0.02);padding:16px;border-radius:10px}
-.services-list h3{margin:0 0 6px 0}
+.card{background:rgba(255,255,255,0.02);padding:16px;border-radius:10px;transform:translateY(0);opacity:1}
+.card h3{margin:0 0 6px 0}
 .price{font-weight:700;margin-top:8px}
 .contact-card, .about{background:rgba(255,255,255,0.02);padding:18px;border-radius:12px}
 .site-footer{margin-top:28px;color:var(--muted)}
@@ -25,4 +30,31 @@ body{margin:0;font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe
 #menuBtn{display:inline-block}
 .content{padding:16px}
 .services-list{grid-template-columns:1fr}
+.hero-right{width:100%}
 }
+
+/* Animations */
+.animate-fade-up{opacity:0;transform:translateY(10px);animation:fadeUp .6s forwards}
+.animate-fade-right{opacity:0;transform:translateX(10px);animation:fadeRight .6s forwards}
+.animate-rise{opacity:0;transform:translateY(18px);animation:rise .6s forwards}
+.delay-1{animation-delay:.12s}
+.delay-2{animation-delay:.24s}
+
+@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+@keyframes fadeRight{to{opacity:1;transform:translateX(0)}}
+@keyframes rise{to{opacity:1;transform:translateY(0)}}
+
+/* Before/After slider */
+.ba-wrap{background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);padding:12px;border-radius:10px}
+.ba-container{position:relative;overflow:hidden;border-radius:10px;height:260px}
+.ba-img{width:100%;height:100%;object-fit:cover;display:block}
+.ba-after-wrap{position:absolute;top:0;left:0;height:100%;width:50%;overflow:hidden}
+.ba-handle{position:absolute;top:0;left:50%;transform:translateX(-50%);height:100%;width:28px;display:flex;align-items:center;justify-content:center;cursor:ew-resize}
+.ba-handle .bar{width:3px;height:60%;background:rgba(255,255,255,0.9);border-radius:2px;box-shadow:0 0 12px rgba(0,0,0,0.5)}
+.ba-labels{display:flex;justify-content:space-between;margin-top:8px;color:var(--muted);font-size:0.9rem}
+
+/* Dev UI adjustments (ensure visible over slider) */
+.dev-panel{max-width:340px}
+
+/* small tweaks */
+.dev-link{color:#00b4d8;text-decoration:underline;cursor:pointer}
