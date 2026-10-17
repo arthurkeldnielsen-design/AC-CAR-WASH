@@ -1,4 +1,4 @@
-// dev.js — basic client-side dev mode
+// dev.js — enhanced client-side dev mode with export code
 (function(){
   var ACTIVATION_CODE = '041012';
   var storageKey = 'ac_car_wash_dev_state_v1';
@@ -15,7 +15,7 @@
   var panel = document.createElement('div');
   panel.className = 'dev-panel';
   panel.style.display = 'none';
-  panel.innerHTML = "<h4>Dev Mode</h4><div class='small'>Enter code to activate editing features.</div>\n    <div id='devAuth' style='margin-top:8px;display:flex;gap:8px'><input id='devCode' placeholder='enter code' style='flex:1;padding:8px;border-radius:6px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:inherit' /><button id='devUnlock' style='padding:8px;border-radius:6px'>Unlock</button></div>\n    <div id='devTools' style='margin-top:10px;display:none'>\n      <div class='dev-tools'>\n        <button id='addText'>Add text box</button>\n        <button id='addImage'>Add image box (drag/drop)</button>\n        <button id='newPage'>Create new page</button>\n        <button id='copyHtml'>Copy current page HTML</button>\n        <div class='dev-capture'>\n          <button id='saveLocal'>Save to browser</button>\n          <button id='restoreLocal'>Restore saved</button>\n        </div>\n        <div style='margin-top:8px' class='small'>Changes are local to your browser until you copy/paste them into GitHub.</div>\n      </div>\n    </div>";
+  panel.innerHTML = "<h4>Dev Mode</h4><div class='small'>Enter code to activate editing features.</div>\n    <div id='devAuth' style='margin-top:8px;display:flex;gap:8px'><input id='devCode' placeholder='enter code' style='flex:1;padding:8px;border-radius:6px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:inherit' /><button id='devUnlock' style='padding:8px;border-radius:6px'>Unlock</button></div>\n    <div id='devTools' style='margin-top:10px;display:none'>\n      <div class='dev-tools'>\n        <button id='addText'>Add text box</button>\n        <button id='addImage'>Add image box (drag/drop)</button>\n        <button id='newPage'>Create new page</button>\n        <button id='copyHtml'>Copy current page HTML</button>\n        <button id='exportCode'>Export code (copy)</button>\n        <div class='dev-capture'>\n          <button id='saveLocal'>Save to browser</button>\n          <button id='restoreLocal'>Restore saved</button>\n        </div>\n        <div style='margin-top:8px' class='small'>Changes are local to your browser until you copy/paste them into GitHub. Use Export to copy a code and paste it into chat with me: <span class='dev-link'>Apply export:&lt;code&gt;</span></div>\n      </div>\n    </div>";
   document.body.appendChild(panel);
 
   devBtn.addEventListener('click', function(){
@@ -114,6 +114,23 @@
     navigator.clipboard.writeText(html).then(function(){ alert('Page HTML copied to clipboard — paste into a new GitHub file to save.'); });
   });
 
+  panel.querySelector('#exportCode').addEventListener('click', function(){
+    var state = collectState();
+    try{
+      var payload = JSON.stringify(state);
+      var code = btoa(unescape(encodeURIComponent(payload)));
+      if(code.length > 200000){
+        if(!confirm('Export is very large ('+Math.round(code.length/1024)+' KB). Continue?')) return;
+      }
+      navigator.clipboard.writeText(code).then(function(){
+        alert('Export code copied to clipboard. Paste it into chat with: Apply export:<code>');
+      }).catch(function(err){
+        // fallback: show in prompt
+        prompt('Copy this export code', code);
+      });
+    }catch(err){ alert('Failed to export: '+err.message); }
+  });
+
   panel.querySelector('#saveLocal').addEventListener('click', function(){
     var state = collectState();
     localStorage.setItem(storageKey, JSON.stringify(state));
@@ -151,16 +168,17 @@
   function collectState(){
     var html = document.documentElement.outerHTML;
     var pages = loadPages();
-    return {timestamp:Date.now(), html:html, pages:pages};
+    // collect images inside dev dropzones as data-urls
+    var imgs = [];
+    document.querySelectorAll('.dev-dropzone img').forEach(function(img, idx){ imgs.push({src:img.src}); });
+    return {timestamp:Date.now(), html:html, pages:pages, images:imgs};
   }
 
   function applyState(state){
     if(state.html){
-      // replace body content only (safe)
       try{
         var doc = new DOMParser().parseFromString(state.html, 'text/html');
         document.body.innerHTML = doc.body.innerHTML;
-        // re-run script.js and dev.js? simpler to reload page
         location.reload();
       }catch(e){ console.error(e); }
     }
